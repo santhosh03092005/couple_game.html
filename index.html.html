@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Couple Compatibility Challenge 💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #FF4F81;
+    --pink-light: #FF8FAE;
+    --pink-pale: #FFE0EA;
+    --purple: #8B5CF6;
+    --purple-light: #A78BFA;
+    --purple-dark: #6D28D9;
+    --bg: #FFF5F7;
+    --white: #FFFFFF;
+    --text: #1F2937;
+    --text-light: #6B7280;
+    --gold: #F59E0B;
+    --gradient: linear-gradient(135deg, #FF4F81, #8B5CF6);
+    --gradient-soft: linear-gradient(135deg, #FFE0EA, #EDE9FE);
+    --shadow: 0 20px 60px rgba(255, 79, 129, 0.15);
+    --shadow-card: 0 8px 32px rgba(0,0,0,0.08);
+    --radius: 20px;
+    --radius-sm: 12px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ===== SCREENS ===== */
+  .screen {
+    display: none;
+    min-height: 100vh;
+    animation: fadeIn 0.5s ease;
+  }
+  .screen.active { display: flex; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== FLOATING HEARTS ===== */
+  .hearts-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .heart-particle {
+    position: absolute;
+    font-size: 18px;
+    animation: floatUp linear infinite;
+    opacity: 0;
+  }
+  @keyframes floatUp {
+    0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.3; }
+    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+  }
+
+  /* ===== LANDING PAGE ===== */
+  #screen-landing {
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    background: 
+      radial-gradient(ellipse at 20% 80%, rgba(255,79,129,0.4), transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(139,92,246,0.4), transparent 50%),
+      linear-gradient(180deg, #1a0a12 0%, #2d1a3e 50%, #1a0a12 100%);
+  }
+  #screen-landing .content {
+    position: relative; z-index: 2;
+    padding: 40px 24px;
+    max-width: 500px;
+  }
+  .landing-emoji {
+    font-size: 72px;
+    margin-bottom: 16px;
+    animation: pulse 2s ease-in-out infinite;
+    display: block;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+  .landing-title {
+    font-size: clamp(28px, 8vw, 42px);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    text-shadow: 0 4px 20px rgba(255,79,129,0.5);
+  }
+  .landing-title span {
+    background: linear-gradient(135deg, #FF8FAE, #C4B5FD);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .landing-sub {
+    font-size: 16px;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 48px;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+  .btn-start {
+    background: var(--gradient);
+    color: white;
+    border: none;
+    padding: 18px 52px;
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    box-shadow: 0 8px 32px rgba(255,79,129,0.5);
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+  }
+  .btn-start:hover {
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 16px 48px rgba(255,79,129,0.6);
+  }
+
+  /* ===== CHOOSE LEVEL ===== */
+  #screen-levels {
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    background: var(--bg);
+  }
+  .level-header {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+  .level-header h2 {
+    font-size: 28px;
+    font-weight: 800;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .level-header p {
+    color: var(--text-light);
+    font-size: 14px;
+    margin-top: 6px;
+  }
+  .levels-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 100%;
+    max-width: 480px;
+  }
+  .level-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    box-shadow: var(--shadow-card);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+  }
+  .level-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 5px; height: 100%;
+    background: var(--gradient);
+    border-radius: 0 4px 4px 0;
+  }
+  .level-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 50px rgba(255,79,129,0.2);
+    border-color: var(--pink-pale);
+  }
+  .level-icon {
+    font-size: 44px;
+    flex-shrink: 0;
+  }
+  .level-info h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .level-info p {
+    font-size: 13px;
+    color: var(--text-light);
+    line-height: 1.5;
+  }
+  .level-badge {
+    margin-left: auto;
+    background: var(--gradient-soft);
+    color: var(--purple);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* ===== SHARED GAME LAYOUT ===== */
+  .game-screen {
+    flex-direction: column;
+    background: var(--bg);
+    min-height: 100vh;
+  }
+  .game-header {
+    background: var(--white);
+    padding: 20px 24px 16px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .game-header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .btn-back {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    padding: 4px;
+  }
+  .game-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .q-counter {
+    font-size: 13px;
+    color: var(--text-light);
+    font-weight: 500;
+  }
+  .progress-bar-wrap {
+    height: 8px;
+    background: var(--pink-pale);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--gradient);
+    border-radius: 20px;
+    transition: width 0.5s ease;
+  }
+  .game-body {
+    flex: 1;
+    padding: 24px 20px 100px;
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .q-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 20px;
+    animation: slideIn 0.4s ease;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .q-number {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--pink);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  .q-text {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+  .q-textarea {
+    width: 100%;
+    border: 2px solid #F3F4F6;
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    resize: vertical;
+    min-height: 100px;
+    transition: border 0.2s;
+    outline: none;
+    background: #FAFAFA;
+  }
+  .q-textarea:focus { border-color: var(--pink); background: #fff; }
+
+  /* Radio Options */
+  .radio-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .radio-opt {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border: 2px solid #F3F4F6;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 14px;
+    font-weight: 500;
+    background: #FAFAFA;
+  }
+  .radio-opt:hover { border-color: var(--pink-light); background: #FFF5F7; }
+  .radio-opt.selected {
+    border-color: var(--pink);
+    background: var(--pink-pale);
+    color: var(--pink);
+  }
+  .radio-dot {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 2px solid #D1D5DB;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .radio-opt.selected .radio-dot {
+    border-color: var(--pink);
+    background: var(--pink);
+  }
+  .radio-dot::after {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: white;
+    display: none;
+  }
+  .radio-opt.selected .radio-dot::after { display: block; }
+
+  /* MCQ Options */
+  .mcq-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .mcq-opt {
+    padding: 14px 12px;
+    border: 2px solid #F3F4F6;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.25s;
+    font-size: 13px;
+    font-weight: 500;
+    background: #FAFAFA;
+    position: relative;
+  }
+  .mcq-opt .opt-letter {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-light);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .mcq-opt:hover { border-color: var(--purple-light); background: #F5F3FF; }
+  .mcq-opt.selected {
+    border-color: var(--purple);
+    background: #EDE9FE;
+    color: var(--purple-dark);
+  }
+  .mcq-opt.selected .opt-letter { color: var(--purple); }
+
+  /* Photo Upload */
+  .photo-upload-card {
+    border: 2px dashed #E5E7EB;
+    border-radius: var(--radius-sm);
+    padding: 32px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #FAFAFA;
+    position: relative;
+  }
+  .photo-upload-card:hover { border-color: var(--pink); background: #FFF5F7; }
+  .photo-upload-card input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  .upload-icon { font-size: 36px; margin-bottom: 8px; }
+  .upload-text { font-size: 14px; color: var(--text-light); }
+  .photo-preview {
+    width: 100%; max-height: 200px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    margin-top: 12px;
+    display: none;
+  }
+
+  /* Bottom Nav */
+  .game-footer {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--white);
+    padding: 16px 24px;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+    display: flex;
+    gap: 12px;
+    z-index: 10;
+  }
+  .btn-prev {
+    flex: 1;
+    padding: 14px;
+    border: 2px solid var(--pink);
+    background: none;
+    color: var(--pink);
+    border-radius: 50px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-prev:hover { background: var(--pink-pale); }
+  .btn-next {
+    flex: 2;
+    padding: 14px;
+    background: var(--gradient);
+    border: none;
+    color: white;
+    border-radius: 50px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 16px rgba(255,79,129,0.4);
+  }
+  .btn-next:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,79,129,0.5); }
+
+  /* ===== LEVEL 3 ===== */
+  #screen-level3 {
+    flex-direction: column;
+    background: var(--bg);
+  }
+  .mic-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 20px 24px;
+    background: white;
+    border-radius: 0 0 var(--radius) var(--radius);
+    box-shadow: var(--shadow-card);
+    margin: 0 16px 24px;
+  }
+  .mic-title {
+    font-size: 22px;
+    font-weight: 800;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+  .mic-subtitle {
+    font-size: 13px;
+    color: var(--text-light);
+    text-align: center;
+    line-height: 1.6;
+    margin-bottom: 28px;
+    max-width: 320px;
+  }
+  .mic-btn {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: var(--gradient);
+    border: none;
+    font-size: 40px;
+    cursor: pointer;
+    box-shadow: 0 8px 32px rgba(255,79,129,0.5);
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  .mic-btn:hover { transform: scale(1.08); }
+  .mic-btn.recording {
+    animation: micPulse 1.5s ease-in-out infinite;
+    background: linear-gradient(135deg, #FF1744, #FF4F81);
+  }
+  @keyframes micPulse {
+    0%, 100% { box-shadow: 0 8px 32px rgba(255,79,129,0.5), 0 0 0 0 rgba(255,79,129,0.4); }
+    50% { box-shadow: 0 8px 32px rgba(255,79,129,0.8), 0 0 0 20px rgba(255,79,129,0); }
+  }
+  .mic-timer {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--pink);
+    margin-bottom: 12px;
+    font-variant-numeric: tabular-nums;
+  }
+  .mic-status {
+    font-size: 13px;
+    color: var(--text-light);
+    font-weight: 500;
+  }
+  .waveform {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    height: 36px;
+    margin: 12px 0;
+  }
+  .wave-bar {
+    width: 4px;
+    background: var(--gradient);
+    border-radius: 2px;
+    animation: wave 1s ease-in-out infinite;
+    transform-origin: bottom;
+  }
+  .wave-bar:nth-child(odd) { animation-delay: 0.1s; }
+  .wave-bar:nth-child(3n) { animation-delay: 0.2s; }
+  @keyframes wave {
+    0%, 100% { height: 6px; }
+    50% { height: 28px; }
+  }
+  .waveform.inactive .wave-bar { height: 6px; animation: none; }
+
+  /* ===== RESULT SCREEN ===== */
+  #screen-result {
+    flex-direction: column;
+    align-items: center;
+    background: var(--bg);
+    padding: 40px 20px 40px;
+    text-align: center;
+  }
+  .confetti-wrap {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .confetti-piece {
+    position: absolute;
+    width: 10px; height: 10px;
+    border-radius: 2px;
+    animation: confettiFall linear forwards;
+    top: -20px;
+  }
+  @keyframes confettiFall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+  .result-content { position: relative; z-index: 1; width: 100%; max-width: 480px; }
+  .result-heart {
+    font-size: 80px;
+    margin-bottom: 12px;
+    animation: heartBeat 1.2s ease-in-out infinite;
+    display: block;
+  }
+  @keyframes heartBeat {
+    0%, 100% { transform: scale(1); }
+    30% { transform: scale(1.2); }
+    60% { transform: scale(1.1); }
+  }
+  .score-circle {
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: var(--gradient);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    box-shadow: 0 12px 40px rgba(255,79,129,0.4);
+  }
+  .score-num {
+    font-size: 48px;
+    font-weight: 900;
+    color: white;
+    line-height: 1;
+  }
+  .score-pct { font-size: 14px; color: rgba(255,255,255,0.8); font-weight: 500; }
+  .result-badge {
+    display: inline-block;
+    background: var(--gradient);
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 8px 24px;
+    border-radius: 50px;
+    margin-bottom: 28px;
+    box-shadow: 0 4px 16px rgba(255,79,129,0.3);
+  }
+  .scores-breakdown {
+    background: white;
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 24px;
+    width: 100%;
+  }
+  .scores-breakdown h3 { font-size: 16px; font-weight: 700; margin-bottom: 16px; color: var(--text); }
+  .score-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .score-label { font-size: 14px; color: var(--text-light); }
+  .score-bar-wrap {
+    flex: 1;
+    height: 8px;
+    background: var(--pink-pale);
+    border-radius: 20px;
+    margin: 0 12px;
+    overflow: hidden;
+  }
+  .score-bar { height: 100%; background: var(--gradient); border-radius: 20px; }
+  .score-val { font-size: 14px; font-weight: 700; color: var(--pink); }
+  .gallery-section {
+    background: white;
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 24px;
+    width: 100%;
+  }
+  .gallery-section h3 { font-size: 16px; font-weight: 700; margin-bottom: 16px; color: var(--text); }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .gallery-img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+  }
+  .gallery-placeholder {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: var(--radius-sm);
+    background: var(--gradient-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+  }
+  .result-actions { display: flex; gap: 12px; width: 100%; }
+  .btn-action {
+    flex: 1;
+    padding: 14px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-download {
+    background: none;
+    border: 2px solid var(--purple);
+    color: var(--purple);
+  }
+  .btn-download:hover { background: #EDE9FE; }
+  .btn-cert {
+    background: var(--gradient);
+    border: none;
+    color: white;
+    box-shadow: 0 4px 16px rgba(255,79,129,0.4);
+  }
+  .btn-cert:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,79,129,0.5); }
+
+  /* ===== CERTIFICATE ===== */
+  #screen-cert {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+    background: linear-gradient(135deg, #FFF5F7, #F5F3FF);
+    min-height: 100vh;
+  }
+  .cert-wrapper {
+    width: 100%;
+    max-width: 500px;
+    background: white;
+    border-radius: 24px;
+    padding: 40px 32px;
+    box-shadow: 0 24px 80px rgba(255,79,129,0.2);
+    position: relative;
+    border: 3px solid transparent;
+    background-clip: padding-box;
+    text-align: center;
+    overflow: hidden;
+  }
+  .cert-border {
+    position: absolute;
+    inset: 0;
+    border-radius: 24px;
+    padding: 3px;
+    background: var(--gradient);
+    -webkit-mask: linear-gradient(white 0 0) content-box, linear-gradient(white 0 0);
+    mask: linear-gradient(white 0 0) content-box, linear-gradient(white 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    z-index: 0;
+  }
+  .cert-inner { position: relative; z-index: 1; }
+  .cert-rosette { font-size: 60px; margin-bottom: 8px; display: block; }
+  .cert-of { font-size: 12px; text-transform: uppercase; letter-spacing: 3px; color: var(--text-light); margin-bottom: 4px; }
+  .cert-title {
+    font-size: 32px;
+    font-weight: 900;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+  .cert-hearts { font-size: 20px; margin: 12px 0; letter-spacing: 4px; }
+  .cert-text { font-size: 15px; color: var(--text-light); line-height: 1.6; margin-bottom: 20px; }
+  .cert-awarded {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .cert-names {
+    font-size: 22px;
+    font-weight: 900;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 20px;
+  }
+  .cert-score-badge {
+    display: inline-block;
+    background: var(--gradient);
+    color: white;
+    font-size: 20px;
+    font-weight: 800;
+    padding: 12px 32px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 16px rgba(255,79,129,0.4);
+  }
+  .cert-date { font-size: 13px; color: var(--text-light); margin-bottom: 24px; }
+  .cert-seal {
+    font-size: 48px;
+    filter: drop-shadow(0 4px 8px rgba(245,158,11,0.4));
+    margin-bottom: 12px;
+    display: block;
+  }
+  .cert-footer {
+    font-size: 11px;
+    color: var(--text-light);
+    font-style: italic;
+  }
+  .cert-deco-1, .cert-deco-2, .cert-deco-3, .cert-deco-4 {
+    position: absolute;
+    font-size: 40px;
+    opacity: 0.08;
+  }
+  .cert-deco-1 { top: 10px; left: 10px; }
+  .cert-deco-2 { top: 10px; right: 10px; }
+  .cert-deco-3 { bottom: 10px; left: 10px; }
+  .cert-deco-4 { bottom: 10px; right: 10px; }
+  .btn-back-cert {
+    margin-top: 20px;
+    padding: 14px 32px;
+    background: var(--gradient);
+    border: none;
+    color: white;
+    border-radius: 50px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(255,79,129,0.4);
+  }
+
+  /* ===== Section title ===== */
+  .section-divider {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--pink);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin: 28px 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--pink-pale);
+  }
+
+  @media (min-width: 600px) {
+    .levels-grid { max-width: 520px; }
+    .game-body { padding: 28px 28px 100px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating Hearts Background -->
+<div class="hearts-bg" id="heartsContainer"></div>
+
+<!-- ===== SCREEN: LANDING ===== -->
+<div class="screen active" id="screen-landing">
+  <div class="content">
+    <span class="landing-emoji">💕</span>
+    <h1 class="landing-title">Couple <span>Compatibility</span> Challenge</h1>
+    <p class="landing-sub">How well do you know and understand your partner? Take the ultimate love quiz and find out!</p>
+    <button class="btn-start" onclick="showScreen('screen-levels')">✨ Start Game</button>
+  </div>
+</div>
+
+<!-- ===== SCREEN: LEVELS ===== -->
+<div class="screen" id="screen-levels">
+  <div style="padding: 50px 20px 40px; width: 100%; max-width: 540px; margin: 0 auto;">
+    <div class="level-header">
+      <h2>💝 Choose Your Level</h2>
+      <p>Each level reveals a deeper layer of your love</p>
+    </div>
+    <div class="levels-grid">
+      <div class="level-card" onclick="startLevel(1)">
+        <div class="level-icon">❤️</div>
+        <div class="level-info">
+          <h3>About Your Partner</h3>
+          <p>Questions to test how well you know your partner's heart and soul</p>
+        </div>
+        <span class="level-badge">Level 1</span>
+      </div>
+      <div class="level-card" onclick="startLevel(2)">
+        <div class="level-icon">💜</div>
+        <div class="level-info">
+          <h3>Understanding</h3>
+          <p>Multiple-choice questions about your partner's mind and feelings</p>
+        </div>
+        <span class="level-badge">Level 2</span>
+      </div>
+      <div class="level-card" onclick="startLevel(3)">
+        <div class="level-icon">🎙️</div>
+        <div class="level-info">
+          <h3>Speak From Your Heart</h3>
+          <p>Express your love freely and answer from your soul</p>
+        </div>
+        <span class="level-badge">Level 3</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SCREEN: LEVEL 1 ===== -->
+<div class="screen game-screen" id="screen-level1">
+  <div class="game-header">
+    <div class="game-header-top">
+      <button class="btn-back" onclick="showScreen('screen-levels')">←</button>
+      <span class="game-title">❤️ About Your Partner</span>
+      <span class="q-counter" id="l1-counter">1 / 10</span>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="l1-progress" style="width:10%"></div>
+    </div>
+  </div>
+  <div class="game-body" id="l1-body"></div>
+  <div class="game-footer">
+    <button class="btn-prev" onclick="l1Prev()">← Prev</button>
+    <button class="btn-next" id="l1-next-btn" onclick="l1Next()">Next →</button>
+  </div>
+</div>
+
+<!-- ===== SCREEN: LEVEL 2 ===== -->
+<div class="screen game-screen" id="screen-level2">
+  <div class="game-header">
+    <div class="game-header-top">
+      <button class="btn-back" onclick="showScreen('screen-levels')">←</button>
+      <span class="game-title">💜 Understanding</span>
+      <span class="q-counter" id="l2-counter">1 / 8</span>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="l2-progress" style="width:12.5%"></div>
+    </div>
+  </div>
+  <div class="game-body" id="l2-body"></div>
+  <div class="game-footer">
+    <button class="btn-prev" onclick="l2Prev()">← Prev</button>
+    <button class="btn-next" id="l2-next-btn" onclick="l2Next()">Next →</button>
+  </div>
+</div>
+
+<!-- ===== SCREEN: LEVEL 3 ===== -->
+<div class="screen game-screen" id="screen-level3">
+  <div class="game-header">
+    <div class="game-header-top">
+      <button class="btn-back" onclick="showScreen('screen-levels')">←</button>
+      <span class="game-title">🎙️ Speak From Your Heart</span>
+      <span class="q-counter">5 reflection Q's</span>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" style="width:100%; background: linear-gradient(135deg,#8B5CF6,#FF4F81)"></div>
+    </div>
+  </div>
+  <div class="game-body">
+    <!-- Mic Section -->
+    <div class="mic-section">
+      <h2 class="mic-title">🎙️ Speak From Your Heart</h2>
+      <p class="mic-subtitle">Speak about your partner continuously for 2 minutes. If you stop for more than 3 seconds, recording ends automatically.</p>
+      
+      <button class="mic-btn" id="micBtn" onclick="toggleRecording()">🎙️</button>
+      
+      <div class="waveform inactive" id="waveform">
+        <div class="wave-bar" style="height:6px"></div>
+        <div class="wave-bar" style="height:6px"></div>
+        <div class="wave-bar" style="height:6px"></div>
+        <div class="wave-bar" style="height:6px"></div>
+        <div class="wave-bar" style="height:6px"></div>
+        <div class="wave-bar" style="height:6px"></div>
+        <div class="wave-bar" style="height:6px"></div>
+        <div class="wave-bar" style="height:6px"></div>
+        <div class="wave-bar" style="height:6px"></div>
+      </div>
+      
+      <div class="mic-timer" id="micTimer">02:00</div>
+      <div class="mic-status" id="micStatus">Tap mic to start recording 💕</div>
+    </div>
+
+    <div class="section-divider">Reflection Questions</div>
+
+    <!-- Reflection questions -->
+    <div id="l3-reflections"></div>
+
+    <div style="height: 20px;"></div>
+    <button class="btn-next" style="width:100%; margin-bottom: 20px;" onclick="submitAll()">💕 Submit & See Results</button>
+  </div>
+</div>
+
+<!-- ===== SCREEN: RESULT ===== -->
+<div class="screen" id="screen-result">
+  <div class="confetti-wrap" id="confettiWrap"></div>
+  <div class="result-content">
+    <span class="result-heart">💕</span>
+    <h2 style="font-size:22px;font-weight:800;margin-bottom:20px;color:var(--text)">Your Compatibility Score</h2>
+    
+    <div class="score-circle">
+      <div class="score-num" id="res-score">92</div>
+      <div class="score-pct">%</div>
+    </div>
+    
+    <div class="result-badge" id="res-badge">Soulmate Level 💍</div>
+    
+    <div class="scores-breakdown">
+      <h3>📊 Level Breakdown</h3>
+      <div class="score-row">
+        <span class="score-label">❤️ About Partner</span>
+        <div class="score-bar-wrap"><div class="score-bar" style="width:88%"></div></div>
+        <span class="score-val">88%</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label">💜 Understanding</span>
+        <div class="score-bar-wrap"><div class="score-bar" style="width:95%"></div></div>
+        <span class="score-val">95%</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label">🎙️ From Heart</span>
+        <div class="score-bar-wrap"><div class="score-bar" style="width:94%"></div></div>
+        <span class="score-val">94%</span>
+      </div>
+    </div>
+
+    <div class="gallery-section" id="gallerySection">
+      <h3>📸 Memory Gallery</h3>
+      <div class="gallery-grid" id="galleryGrid">
+        <div class="gallery-placeholder">💑</div>
+        <div class="gallery-placeholder">💕</div>
+      </div>
+    </div>
+
+    <div style="background:white;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-card);margin-bottom:24px;width:100%">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="font-size:32px">🎙️</span>
+        <div>
+          <div style="font-size:15px;font-weight:700;color:var(--text)">Voice Recording</div>
+          <div style="font-size:13px;color:var(--text-light)" id="voiceBadge">Recording not completed</div>
+        </div>
+        <span style="margin-left:auto;font-size:20px" id="voiceCheck">⬜</span>
+      </div>
+    </div>
+
+    <div class="result-actions">
+      <button class="btn-action btn-download" onclick="showScreen('screen-levels')">🔁 Play Again</button>
+      <button class="btn-action btn-cert" onclick="showScreen('screen-cert')">🏆 Get Certificate</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SCREEN: CERTIFICATE ===== -->
+<div class="screen" id="screen-cert">
+  <div style="padding:24px;width:100%;max-width:540px;margin:0 auto;">
+    <div class="cert-wrapper">
+      <div class="cert-inner">
+        <div class="cert-deco-1">💕</div>
+        <div class="cert-deco-2">💕</div>
+        <div class="cert-deco-3">💕</div>
+        <div class="cert-deco-4">💕</div>
+        
+        <span class="cert-rosette">🏆</span>
+        <div class="cert-of">Certificate of</div>
+        <div class="cert-title">Love</div>
+        <div class="cert-hearts">💕 ❤️ 💜</div>
+        <p class="cert-text">This is to certify that you truly know and understand your partner, showing a deep and genuine connection rooted in love, trust, and compassion.</p>
+        
+        <div class="cert-awarded">Awarded to</div>
+        <div class="cert-names">You Know Your Partner 💝</div>
+        
+        <div class="cert-score-badge" id="cert-score-display">92% Compatibility</div>
+        
+        <div class="cert-date" id="cert-date">Issued on: —</div>
+        
+        <span class="cert-seal">🌟</span>
+        <div class="cert-footer">"Love is not just a feeling — it's understanding, effort, and presence."</div>
+      </div>
+    </div>
+    
+    <div style="display:flex;gap:12px;margin-top:16px;">
+      <button class="btn-prev" style="flex:1;" onclick="showScreen('screen-result')">← Back</button>
+      <button class="btn-cert btn-action" style="flex:2;" onclick="printCert()">🖨️ Save Certificate</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+// ===== FLOATING HEARTS =====
+const heartEmojis = ['💕','💖','💗','💝','💓','❤️','💜','🌸'];
+function createHearts() {
+  const container = document.getElementById('heartsContainer');
+  for (let i = 0; i < 18; i++) {
+    const h = document.createElement('div');
+    h.className = 'heart-particle';
+    h.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+    h.style.left = Math.random() * 100 + 'vw';
+    h.style.animationDuration = (6 + Math.random() * 8) + 's';
+    h.style.animationDelay = (Math.random() * 10) + 's';
+    h.style.fontSize = (12 + Math.random() * 14) + 'px';
+    container.appendChild(h);
+  }
+}
+createHearts();
+
+// ===== SCREEN NAVIGATION =====
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ===== STATE =====
+let state = {
+  l1: { current: 0, answers: {} },
+  l2: { current: 0, answers: {} },
+  photos: { fav1: null, fav2: null },
+  recording: false,
+  recordingDone: false
+};
+
+// ===== LEVEL 1 DATA =====
+const l1Questions = [
+  { id:'q1', type:'textarea', text:"What is your partner's happiest memory from the last 4 years?", placeholder:"Describe that special memory..." },
+  { id:'q2', type:'radio', text:"What is your partner's love language?", options:['Words of Affirmation','Gifts','Quality Time','Acts of Service','Physical Touch'] },
+  { id:'q3', type:'photo', text:"Which photo of us do you think is my favorite?", key:'fav1' },
+  { id:'q4', type:'photo', text:"Which photo of me is your favorite?", key:'fav2' },
+  { id:'q5', type:'textarea', text:"How would you describe me as a person?", placeholder:"Your heartfelt description..." },
+  { id:'q6', type:'textarea', text:"Tell me about my personality.", placeholder:"What makes your partner unique..." },
+  { id:'q7', type:'textarea', text:"What is one bad habit or behavior that I have?", placeholder:"Be honest and kind..." },
+  { id:'q8', type:'textarea', text:"How do you think I usually express my love?", placeholder:"The little things they do..." },
+  { id:'q9', type:'textarea', text:"What was your first impression of me when we met?", placeholder:"That unforgettable first moment..." },
+  { id:'q10', type:'textarea', text:"What do I do that makes you feel truly appreciated and special?", placeholder:"Those precious moments..." }
+];
+
+function renderL1() {
+  const q = l1Questions[state.l1.current];
+  const idx = state.l1.current;
+  const counter = document.getElementById('l1-counter');
+  const progress = document.getElementById('l1-progress');
+  const nextBtn = document.getElementById('l1-next-btn');
+  counter.textContent = `${idx+1} / ${l1Questions.length}`;
+  progress.style.width = ((idx+1)/l1Questions.length*100) + '%';
+  nextBtn.textContent = idx === l1Questions.length-1 ? '✅ Complete Level 1' : 'Next →';
+  
+  let html = `<div class="q-card">
+    <div class="q-number">Question ${idx+1}</div>
+    <div class="q-text">${q.text}</div>`;
+  
+  if (q.type === 'textarea') {
+    const val = state.l1.answers[q.id] || '';
+    html += `<textarea class="q-textarea" placeholder="${q.placeholder}" onchange="state.l1.answers['${q.id}']=this.value">${val}</textarea>`;
+  } else if (q.type === 'radio') {
+    html += '<div class="radio-options">';
+    q.options.forEach(opt => {
+      const sel = state.l1.answers[q.id] === opt ? 'selected' : '';
+      html += `<div class="radio-opt ${sel}" onclick="selectRadio('${q.id}', '${opt}', this)">
+        <div class="radio-dot"></div>${opt}</div>`;
+    });
+    html += '</div>';
+  } else if (q.type === 'photo') {
+    const imgSrc = state.photos[q.key];
+    html += `<div class="photo-upload-card" onclick="document.getElementById('upload-${q.key}').click()">
+      <input type="file" id="upload-${q.key}" accept="image/*" onchange="handlePhoto('${q.key}', this)">
+      <div class="upload-icon">📸</div>
+      <div class="upload-text">Tap to upload a photo</div>
+    </div>
+    ${imgSrc ? `<img src="${imgSrc}" class="photo-preview" style="display:block">` : ''}`;
+  }
+  
+  html += '</div>';
+  document.getElementById('l1-body').innerHTML = html;
+}
+
+function selectRadio(qid, val, el) {
+  state.l1.answers[qid] = val;
+  el.closest('.radio-options').querySelectorAll('.radio-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function handlePhoto(key, input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    state.photos[key] = e.target.result;
+    renderL1();
+    updateGallery();
+  };
+  reader.readAsDataURL(file);
+}
+
+function l1Next() {
+  if (state.l1.current < l1Questions.length - 1) {
+    state.l1.current++;
+    renderL1();
+    window.scrollTo(0,0);
+  } else {
+    showScreen('screen-level2');
+    renderL2();
+  }
+}
+function l1Prev() {
+  if (state.l1.current > 0) { state.l1.current--; renderL1(); window.scrollTo(0,0); }
+  else showScreen('screen-levels');
+}
+
+// ===== LEVEL 2 DATA =====
+const l2Questions = [
+  { id:'q1', text:"Which social media app would your partner keep forever?", options:['Instagram','WhatsApp','YouTube','Facebook'] },
+  { id:'q2', text:"What is your partner's biggest weakness?", options:['Overthinking','Anger','Trusting too much','Being emotional'] },
+  { id:'q3', text:"What is your favorite thing about your partner?", options:['Smile','Personality','Kindness','Sense of humor'] },
+  { id:'q4', text:"What was your favorite part of your first date?", options:['The conversation','The place','The laughter','Everything'] },
+  { id:'q5', text:"Which activity would you enjoy most together?", options:['Traveling','Cooking','Watching movies','Gaming'] },
+  { id:'q6', text:"What quality made you fall for your partner?", options:['Personality','Smile','Kindness','Confidence'] },
+  { id:'q7', text:"What is the foundation of a healthy relationship?", options:['Trust','Respect','Communication','All of these'] },
+  { id:'q8', text:"What would you want your partner to remember forever?", options:['Your love','Your support','Your memories together','Your loyalty'] }
+];
+
+function renderL2() {
+  const q = l2Questions[state.l2.current];
+  const idx = state.l2.current;
+  const letters = ['A','B','C','D'];
+  document.getElementById('l2-counter').textContent = `${idx+1} / ${l2Questions.length}`;
+  document.getElementById('l2-progress').style.width = ((idx+1)/l2Questions.length*100) + '%';
+  document.getElementById('l2-next-btn').textContent = idx === l2Questions.length-1 ? '✅ Complete Level 2' : 'Next →';
+  
+  let html = `<div class="q-card">
+    <div class="q-number">Question ${idx+1}</div>
+    <div class="q-text">${q.text}</div>
+    <div class="mcq-options">`;
+  q.options.forEach((opt, i) => {
+    const sel = state.l2.answers[q.id] === opt ? 'selected' : '';
+    html += `<div class="mcq-opt ${sel}" onclick="selectMCQ('${q.id}', '${opt}', this)">
+      <span class="opt-letter">${letters[i]}</span>${opt}</div>`;
+  });
+  html += `</div></div>`;
+  document.getElementById('l2-body').innerHTML = html;
+}
+
+function selectMCQ(qid, val, el) {
+  state.l2.answers[qid] = val;
+  el.closest('.mcq-options').querySelectorAll('.mcq-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function l2Next() {
+  if (state.l2.current < l2Questions.length - 1) {
+    state.l2.current++; renderL2(); window.scrollTo(0,0);
+  } else {
+    showScreen('screen-level3');
+    renderL3Reflections();
+  }
+}
+function l2Prev() {
+  if (state.l2.current > 0) { state.l2.current--; renderL2(); window.scrollTo(0,0); }
+  else showScreen('screen-level1');
+}
+
+// ===== LEVEL 3 =====
+const l3Questions = [
+  { id:'r1', text:"What is the first thing that comes to your mind when you think about your partner?" },
+  { id:'r2', text:"What is one quality of your partner that you admire the most?" },
+  { id:'r3', text:"What is your favorite memory with your partner?" },
+  { id:'r4', text:"What is something your partner does that makes you feel special?" },
+  { id:'r5', text:"Why is your partner important in your life?" }
+];
+
+function renderL3Reflections() {
+  let html = '';
+  l3Questions.forEach((q, i) => {
+    html += `<div class="q-card">
+      <div class="q-number">Reflection ${i+1}</div>
+      <div class="q-text">${q.text}</div>
+      <textarea class="q-textarea" placeholder="Pour your heart out..." onchange="state.l3answers = state.l3answers||{}; state.l3answers['${q.id}']=this.value">${(state.l3answers||{})[q.id]||''}</textarea>
+    </div>`;
+  });
+  document.getElementById('l3-reflections').innerHTML = html;
+}
+
+// Microphone / Recording
+let recTimer = null;
+let recSeconds = 120;
+
+function toggleRecording() {
+  const btn = document.getElementById('micBtn');
+  const waveform = document.getElementById('waveform');
+  const timerEl = document.getElementById('micTimer');
+  const statusEl = document.getElementById('micStatus');
+  
+  if (!state.recording) {
+    state.recording = true;
+    btn.classList.add('recording');
+    btn.textContent = '⏹️';
+    waveform.classList.remove('inactive');
+    statusEl.textContent = 'Recording... keep talking! 🎙️';
+    recSeconds = 120;
+    
+    recTimer = setInterval(() => {
+      recSeconds--;
+      const m = String(Math.floor(recSeconds/60)).padStart(2,'0');
+      const s = String(recSeconds%60).padStart(2,'0');
+      timerEl.textContent = `${m}:${s}`;
+      if (recSeconds <= 0) stopRecording();
+    }, 1000);
+  } else {
+    stopRecording();
+  }
+}
+
+function stopRecording() {
+  clearInterval(recTimer);
+  state.recording = false;
+  state.recordingDone = true;
+  const btn = document.getElementById('micBtn');
+  const waveform = document.getElementById('waveform');
+  const statusEl = document.getElementById('micStatus');
+  btn.classList.remove('recording');
+  btn.textContent = '✅';
+  waveform.classList.add('inactive');
+  statusEl.textContent = 'Recording complete! 💕';
+  document.getElementById('voiceBadge').textContent = 'Recording completed ✅';
+  document.getElementById('voiceCheck').textContent = '✅';
+}
+
+function submitAll() {
+  calcScore();
+  showScreen('screen-result');
+  spawnConfetti();
+  updateGallery();
+  document.getElementById('cert-date').textContent = 'Issued on: ' + new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+}
+
+// ===== SCORING =====
+function calcScore() {
+  const l1Filled = Object.keys(state.l1.answers).length;
+  const l2Filled = Object.keys(state.l2.answers).length;
+  const l3Filled = Object.keys(state.l3answers||{}).length;
+  
+  const s1 = Math.round((l1Filled / l1Questions.length) * 100);
+  const s2 = Math.round((l2Filled / l2Questions.length) * 100);
+  const s3Raw = Math.round((l3Filled / l3Questions.length) * 80) + (state.recordingDone ? 20 : 0);
+  const s3 = Math.min(100, s3Raw);
+  const total = Math.round((s1*0.35 + s2*0.35 + s3*0.3));
+  
+  document.getElementById('res-score').textContent = total;
+  document.getElementById('cert-score-display').textContent = total + '% Compatibility';
+  
+  // Update bars
+  const bars = document.querySelectorAll('.score-bar');
+  const vals = document.querySelectorAll('.score-val');
+  if (bars[0]) bars[0].style.width = s1+'%';
+  if (bars[1]) bars[1].style.width = s2+'%';
+  if (bars[2]) bars[2].style.width = s3+'%';
+  if (vals[0]) vals[0].textContent = s1+'%';
+  if (vals[1]) vals[1].textContent = s2+'%';
+  if (vals[2]) vals[2].textContent = s3+'%';
+  
+  const badges = { 90:'Soulmate Level 💍', 70:'Deep Love 💕', 50:'Growing Together 🌱', 0:'Just Getting Started 💫' };
+  const badge = Object.entries(badges).reverse().find(([k]) => total >= parseInt(k));
+  document.getElementById('res-badge').textContent = badge ? badge[1] : 'Just Getting Started 💫';
+}
+
+// ===== GALLERY =====
+function updateGallery() {
+  const grid = document.getElementById('galleryGrid');
+  const items = [];
+  if (state.photos.fav1) items.push(`<img src="${state.photos.fav1}" class="gallery-img">`);
+  if (state.photos.fav2) items.push(`<img src="${state.photos.fav2}" class="gallery-img">`);
+  if (items.length === 0) {
+    grid.innerHTML = '<div class="gallery-placeholder">💑</div><div class="gallery-placeholder">💕</div>';
+  } else {
+    grid.innerHTML = items.join('');
+  }
+}
+
+// ===== CONFETTI =====
+function spawnConfetti() {
+  const wrap = document.getElementById('confettiWrap');
+  wrap.innerHTML = '';
+  const colors = ['#FF4F81','#8B5CF6','#F59E0B','#10B981','#60A5FA','#F472B6'];
+  for (let i = 0; i < 60; i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.width = (6 + Math.random() * 8) + 'px';
+    p.style.height = (6 + Math.random() * 8) + 'px';
+    p.style.animationDuration = (2 + Math.random() * 3) + 's';
+    p.style.animationDelay = (Math.random() * 2) + 's';
+    wrap.appendChild(p);
+  }
+}
+
+// ===== START LEVEL =====
+function startLevel(n) {
+  if (n === 1) { showScreen('screen-level1'); renderL1(); }
+  else if (n === 2) { showScreen('screen-level2'); renderL2(); }
+  else { showScreen('screen-level3'); renderL3Reflections(); }
+}
+
+function printCert() {
+  window.print();
+}
+</script>
+</body>
+</html>
